@@ -1,9 +1,9 @@
 # tetris
 
-Group: Amy Mai, Viana Lin, Tami Takada
-Period 4
-Proposal Description: Tetris game
-Components:
+Group: Amy Mai, Viana Lin, Tami Takada  
+Period 4  
+Proposal Description: Tetris game  
+Components:  
 - (Amy) animation
   - sdl library
 - (Viana) files to save scores
