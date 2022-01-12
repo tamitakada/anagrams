@@ -14,4 +14,4 @@ The pipe will facilitate communication between players.
 has ended and to allow for scores to be saved before
 ending.
 - (Tami) memory allocation for tile placement - we have to
-remember where tiles are placed, so we will use memory.
+remember where tiles are placed, so we will use memory (heap memory with malloc/calloc)
