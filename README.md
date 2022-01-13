@@ -1,17 +1,13 @@
-# tetris
+# Anagrams
 
 Group: Amy Mai, Viana Lin, Tami Takada  
 Period 4  
-Proposal Description: Tetris game  
+Proposal Description:  
+Two-player anagrams game.  
 Components:  
-- (Amy) animation - by 1/20
-  - sdl library
-- (Viana) files to save scores - by 1/20
-- (Tami) pipes for two player - we will allow two player 
-Tetris games so players can send lines to each other. 
-The pipe will facilitate communication between players. - by 1/17
-- (Viana) signals - we will use signals to show that a game 
-has ended and to allow for scores to be saved before
-ending. - by 1/17
-- (Tami) memory allocation for tile placement - we have to 
-remember where tiles are placed, so we will use memory (heap memory with malloc/calloc) - 1/19
+- 1/20 (Amy) Sound effects (SDL/SDL_mixer library)
+- 1/20 (Amy) UI - Modifying prints to make the game look nice
+- 1/17 (Tami) Sockets - Allowing the two players to share live scores
+- 1/17 (Tami) Memory Allocation - Track used words
+- 1/16 (Viana) Files - Checking the word list, saving high scores
+- 1/19 (Viana) Signals - Quitting the game
