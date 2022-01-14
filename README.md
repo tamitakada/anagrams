@@ -1,10 +1,11 @@
 # Anagrams
-Given 6 random letters, the player tries to make as many word combinations as possible. Each combination has a certain number of points based on difficulty, and these points are added together at the end of the 30 second timer. Whoever gets the most points wins the game. 
 
 Group: Amy Mai, Viana Lin, Tami Takada  
 Period 4  
 Proposal Description:  
 Two-player anagrams game.  
+Given 6 random letters, the player tries to make as many word combinations as possible. Each combination has a certain number of points based on difficulty, and these points are added together at the end of the 30 second timer. Whoever gets the most points wins the game. 
+
 Components:  
 - 1/20 (Amy) Sound effects (SDL/SDL_mixer library)
 - 1/20 (Amy) UI - Modifying prints to make the game look nice
