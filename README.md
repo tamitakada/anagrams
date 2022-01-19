@@ -23,10 +23,10 @@ One user is going to run the server and wait for the other user to join. Once th
 - UI: Modifying prints to make the game look nice
 
 ## Timeline:
-[ ] Files (Viana) 1/16 
-[ ] Sockets (Tami) 1/17 
-[ ] Memory Allocation (Tami) 1/17 
-[ ] Signals (Viana) 1/19 
-[ ] Timer (Amy) 1/20 
-[ ] Sound Effects (Amy) 1/20 
-[ ] UI (Amy) 1/20 
+- [ ] Files (Viana) 1/16 
+- [ ] Sockets (Tami) 1/17 
+- [ ] Memory Allocation (Tami) 1/17 
+- [ ] Signals (Viana) 1/19 
+- [ ] Timer (Amy) 1/20 
+- [ ] Sound Effects (Amy) 1/20 
+- [ ] UI (Amy) 1/20 
