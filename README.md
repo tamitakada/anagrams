@@ -2,11 +2,9 @@
 
 **Group Members:** Amy Mai, Viana Lin, Tami Takada  
 **Period:** 4  
+**Proposal Statement:** We will make a two player anagrams game.
 
-## Proposal Statement:  
-We will make a two player anagrams game.
-
-## UI Description
+## Description
 One user is going to run the server and wait for the other user to join. Once the other user joins, the game will start. Given 6 random letters, the player tries to make as many word combinations as possible. Each combination has a certain number of points based on difficulty, and these points are added together at the end of the 30 second timer. Whoever gets the most points wins the game. 
 
 ## Technical Design:  
