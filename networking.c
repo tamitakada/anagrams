@@ -20,7 +20,7 @@ int server_setup() {
 }
 
 int is_duplicate(char * arr, char c) {
-  while (arr) {
+  while (*arr) {
     if (*arr == c) return 1;
     arr++;
   }
@@ -28,8 +28,9 @@ int is_duplicate(char * arr, char c) {
 }
 
 char * generate_characters() {
-  printf("gen");
-  char * chars = malloc(sizeof(char) * 6);
+  char * chars = malloc(sizeof(char) * 7);
+  chars[6] = '\0';
+
   int i;
   for (i = 0; i < 6; i++) {
     if (i < 2) {
