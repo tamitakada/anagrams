@@ -50,23 +50,15 @@ char * generate_characters() {
 
 void processing(int sd) {
   char * chars = generate_characters();
-  int i;
-  for (i = 0; i < 6; i++) {
-    printf("%c\n", chars[i]);
+
+  write(sd, chars, sizeof(chars));
+
+  while (1) {
+    char word[6];
+    read(sd, word, sizeof(word));
+    printf("%s\n", word);
   }
 
-    char msg[100];
-    int n = read(sd, msg, sizeof(msg));
-    if (n) {
-        int i = 0;
-        while (msg[i]) {
-            msg[i] = toupper(msg[i]);
-            i++;
-        }
-
-        write(sd, msg, sizeof(msg));
-        processing(sd);
-    }
 }
 
 void handle_client(int sd) {

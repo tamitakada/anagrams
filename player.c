@@ -1,17 +1,23 @@
 #include "networking.h"
 
 void client_processing(int sd) {
-  char msg[100];
-  printf("Input: ");
-  fgets(msg, sizeof(msg), stdin);
-  
-  write(sd, msg, sizeof(msg));
-
-  char processed[100];
-  int n = read(sd, processed, sizeof(processed));
+  char letters[7];
+  int n = read(sd, letters, sizeof(letters));
   if (n) {
-    printf("Processed: %s\n", processed);
-    client_processing(sd);
+    printf("Letters: %s\n", letters);
+    // client_processing(sd);
+  }
+
+  while (1) {
+    char word[100];
+    printf("Input: ");
+    fgets(word, sizeof(word), stdin);
+
+    int i = strcspn(word, "\n");
+    if (i > 6) i = 6;
+    word[i] = '\0';
+
+    write(sd, word, (i + 1) * sizeof(char));
   }
 }
 
