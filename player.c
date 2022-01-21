@@ -9,14 +9,7 @@ void client_processing(int sd) {
   }
 
   while (1) {
-    char word[100];
-    printf("Input: ");
-    fgets(word, sizeof(word), stdin);
-
-    int i = strcspn(word, "\n");
-    if (i > 6) i = 6;
-    word[i] = '\0';
-
+    char * word = get_input();
     write(sd, word, (i + 1) * sizeof(char));
   }
 }

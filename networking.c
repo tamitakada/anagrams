@@ -61,7 +61,45 @@ void processing(int sd) {
 
 }
 
+char * get_input() {
+  char word[100];
+  printf("Input: ");
+  fgets(word, sizeof(word), stdin);
+
+  int i = strcspn(word, "\n");
+  if (i > 6) i = 6;
+  word[i] = '\0';
+
+  char * to_return = malloc(sizeof(word));
+  strcpy(to_return, word);
+
+  return to_return;
+}
+
+int get_word_points(char * word) {
+  int fd = open("words.txt");
+
+  char c;
+  char w[7];
+  int i = 0;
+  while (read(fd, &c, sizeof(c))) {
+    if (c == '\n') {
+      w[i] = '\0';
+      if (strcmp(w, word) == 0) return strlen(word) * 100;
+      i = 0;
+    } else {
+      w[i] = c;
+      i++;
+    }
+  }
+
+  return 0;
+}
+
 void handle_client(int sd) {
+    int pipe[2];
+    pipe(pipe);
+
     int client_socket;
     socklen_t sock_size;
     struct sockaddr_storage client_address;
@@ -70,7 +108,19 @@ void handle_client(int sd) {
 
     printf("Accepted match!\n");
 
-    processing(client_socket);
+    int f = fork();
+    if (f) {
+        close(pipe[1]);
+        processing(client_socket);
+    } else {
+        close(pipe[0]);
+        while (1) {
+          char * word = get_input();
+          int pts = get_word_points(word);
+          printf("%d\n", pts);
+          // sth
+        }
+    }
 }
 
 void server_connect(int sd) {
