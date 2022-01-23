@@ -67,3 +67,27 @@ int get_word_points(char * word) {
   close(fd);
   return 0;
 }
+
+int already_used(char * filename, char * word) {
+  int fd = open(filename, O_RDONLY, 0644);
+
+  char past_word[7];
+  char current;
+  int i = 0;
+  while (read(fd, &current, sizeof(char))) {
+    if (current == '\n') {
+      past_word[i] = 0;
+      i = 0;
+      if (strcmp(past_word, word) == 0) {
+        close(fd);
+        return 1;
+      }
+    } else {
+      past_word[i] = current;
+      i++;
+    }
+  }
+
+  close(fd);
+  return 0;
+}
