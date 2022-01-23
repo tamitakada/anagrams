@@ -23,4 +23,6 @@ clean:
 	rm *.o
 	rm server
 	rm player
+	rm player_0.txt
+	rm player_1.txt
 	rm *~
