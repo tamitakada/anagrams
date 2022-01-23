@@ -12,20 +12,51 @@ char * generate_characters() {
   char * chars = malloc(sizeof(char) * 7);
   chars[6] = '\0';
 
-  int i;
-  for (i = 0; i < 6; i++) {
-    if (i < 2) {
-        char vowels[5] = {'a', 'e', 'i', 'o', 'u'};
-        int r = rand() % 5;
-        chars[i] = vowels[r];
-    } else {
-      char r = rand() % 26 + 97;
-      while (is_duplicate(chars, r)) {
-        r = rand() % 26 + 97;
-      }
-      chars[i] = r;
+	int i;
+	
+	//to generate the first 2 vowels without duplicating 
+	for (i = 0; i < 2; i++) {
+	
+		//adding the first vowel
+		char vowels[5] = {'a', 'e', 'i', 'o', 'u'};
+    int r = rand() % 5;
+    chars[i] = vowels[r];
+    
+    //removing the first vowel from the list of avail vowels to prevent from duplicating
+    char * vowels_left = malloc(sizeof(char) * 5);
+  	chars[5] = '\0';
+  	
+  	//useful later for letter gen improvement
+  	char * vowels_used = malloc(sizeof(char) * 3);
+  	chars[3] = '\0';
+  	
+    int j;
+    for (j = 0; j < 4; j++) {
+    	if (j != r) {
+    		vowels_left[j] = vowels[j];
+    	}
+    	vowels_used[0] = vowels[j];
     }
+    
+    //adding the second vowel; not that practical but only 2 vowels anyways
+    r = rand() % 4;
+    chars[i] = vowels_left[r];
+    vowels_used[1] = vowels_left[r];
   }
+  
+  //adding the consonants 
+  for (i = 2; i < 6; i++) {
+  	char r = rand() % 26 + 97;
+  	
+  	//checking duplicates and vowels; if true, regenerate 
+    while (is_duplicate(chars, r) || r == 'a' || r == 'e' || r == 'i' || r == 'o' || r == 'u') {
+    	r = rand() % 26 + 97;
+    }  
+    
+    //adding it to array
+    chars[i] = r;
+  }
+  
   return chars;
 }
 
