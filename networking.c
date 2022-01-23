@@ -19,7 +19,15 @@ int server_setup() {
   return sd;
 }
 
-void processing(int sd, char * chars) {
+/*
+  processing - Gets words inputted by the player and assigns points
+
+  Takes the following parameters:
+    int sd - The socket descriptor that the player can write/read to/from
+    char * chars - The set characters that can be used in the game
+    char * filename - The file where the words that the player inputs will be stored in
+*/
+void processing(int sd, char * chars, char * filename) {
     write(sd, chars, sizeof(chars));
 
     char word[7];
@@ -27,8 +35,20 @@ void processing(int sd, char * chars) {
     while (1) {
         b = read(sd, word, sizeof(word));
         word[b] = 0;
+
         printf("Received word: %s\n", word);
-        int wd_pts = get_word_points(word);
+        
+        int wd_pts;
+        if (already_used(filename, word)) wd_pts = 0;
+        else wd_pts = get_word_points(word);
+
+        if (wd_pts) {
+          word[b] = '\n';
+          int fd = open(filename, O_WRONLY | O_APPEND, 0644);
+          write(fd, word, (b + 1) * sizeof(char));
+          close(fd);
+        }
+        
         write(sd, &wd_pts, sizeof(int));
     }
 }
@@ -73,11 +93,15 @@ void handle_client(int sd) {
         int pid_player_1 = fork();
         if (pid_player_1 == 0) {
             printf("Forked player #1!\n");
-            processing(client_sockets[1], chars);
+            int fd = open("player_1.txt", O_CREAT, 0644);
+            close(fd);
+            processing(client_sockets[1], chars, "player_1.txt");
         }
     } else {
         printf("Forked player #0!\n");
-        processing(client_sockets[0], chars);
+        int fd = open("player_0.txt", O_CREAT, 0644);
+        close(fd);
+        processing(client_sockets[0], chars, "player_0.txt");
     }
 }
 
