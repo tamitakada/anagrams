@@ -16,6 +16,6 @@ int server_setup();
 void server_connect(int sd);
 int client_connect();
 void handle_client(int sd);
-void client_processing(int sd)
+void client_processing(int sd);
 
 #endif
