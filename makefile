@@ -25,4 +25,6 @@ clean:
 	rm player
 	rm player_0.txt
 	rm player_1.txt
+	rm score_0.data
+	rm score_1.data
 	rm *~
