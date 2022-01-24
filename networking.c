@@ -146,11 +146,8 @@ void processing(int player_number, char * chars) {
         b = read(sd, word, sizeof(word));
         word[b] = 0;
         printf("Received word: %s\n", word);
-        system(ding);
         
-        int wd_pts;
-        if (already_used(filename, word)) wd_pts = 0;
-        else wd_pts = get_word_points(word);
+        int wd_pts = get_word_points(word);
 
         fd = open(score_filename, O_RDWR, 0644);
         int current_pts;
@@ -163,6 +160,7 @@ void processing(int player_number, char * chars) {
 
         players[player_number].score += wd_pts;
 
+        printf("%d points", wd_pts);
         if (wd_pts) {
           word[b] = '\n';
           fd = open(filename, O_WRONLY | O_APPEND, 0644);
