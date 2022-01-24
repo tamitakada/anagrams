@@ -7,6 +7,11 @@
 ## Description
 One user is going to run the server and wait for the other user to join. Once the other user joins, the game will start. Given 6 random letters, the player tries to make as many word combinations as possible. Each combination has a certain number of points based on difficulty, and these points are added together at the end of the 30 second timer. Whoever gets the most points wins the game. 
 
+## Known Issues
+- The result (You win/lose/tie) is printed with extra characters for some reason
+- Words that use letters that aren't part of the originally generated set are still given points
+- * `main` branch does not work - please use `working` branch
+
 ## Instructions
 1. Run `make`
 2. Run `./server`
