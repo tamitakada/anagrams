@@ -26,10 +26,6 @@ char * generate_characters() {
     char * vowels_left = malloc(sizeof(char) * 5);
   	chars[5] = '\0';
   	
-  	//useful later for letter gen improvement
-  	char * vowels_used = malloc(sizeof(char) * 3);
-  	chars[3] = '\0';
-  	
     int j;
     for (j = 0; j < 4; j++) {
     	if (j != r) {
