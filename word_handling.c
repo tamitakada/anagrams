@@ -60,6 +60,14 @@ char * get_input() {
   return to_return;
 }
 
+int is_in_char_set(char * word, char * chars) {
+  while (*word) {
+    if (!is_duplicate(chars, *word)) return 0;
+    word++;
+  }
+  return 1;
+}
+
 int get_word_points(char * word) {
   int fd = open("words.txt", O_RDONLY, 0644);
 

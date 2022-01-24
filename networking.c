@@ -111,7 +111,7 @@ void processing(int player_number, char * chars) {
         printf("Received word: %s\n", word);
         
         int wd_pts;
-        if (already_used(filename, word)) wd_pts = 0;
+        if (already_used(filename, word) || !is_in_char_set(word, chars)) wd_pts = 0;
         else wd_pts = get_word_points(word);
 
         fd = open(score_filename, O_RDWR, 0644);
