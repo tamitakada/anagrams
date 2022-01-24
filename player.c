@@ -13,6 +13,4 @@ int main() {
   }
   
   printf("\n\n");
-
-  show_high_scores();
 }
