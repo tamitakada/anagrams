@@ -31,7 +31,7 @@ void server_end_game(int sig) {
     char * p0_highscore_filename;
     int p0_highscore;
     p0_highscore_filename = "p0_highscore_filename";
-   	int fd = open("p0_highscore_filename", O_RDONLY, 0644);
+   	int fd = open("p0_highscore_filename", O_CREAT | O_WRONLY, 0644);
    	read(fd, &p0_highscore, sizeof(int));
    	
    	if (p0_highscore < score_0) {
@@ -49,7 +49,7 @@ void server_end_game(int sig) {
     char * p1_highscore_filename;
     int p1_highscore;
     p1_highscore_filename = "p1_highscore_filename";
-   	int fd = open("p1_highscore_filename", O_RDONLY, 0644);
+   	int fd = open("p1_highscore_filename", O_CREAT | O_WRONLY, 0644);
    	read(fd, &p1_highscore, sizeof(int));
    	
    	if (p1_highscore < score_0) {
