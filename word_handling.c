@@ -61,8 +61,16 @@ char * get_input() {
 }
 
 int is_in_char_set(char * word, char * chars) {
+  char used_up[10];
+  used_up[0] = 0;
+  int i = 0;
   while (*word) {
-    if (!is_duplicate(chars, *word)) return 0;
+    if (!is_duplicate(chars, *word) || is_duplicate(used_up, *word)) return 0;
+    else {
+      used_up[i] = *word;
+      i++;
+      used_up[i] = 0;
+    }
     word++;
   }
   return 1;
