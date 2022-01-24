@@ -41,13 +41,13 @@ void server_end_game(int sig) {
 
       int sd = players[i].server_socket;
       if (winner == i) {
-        char msg[20] = "You win!";
-        write(sd, "You win!", strlen(msg) * sizeof(char));
+        char msg[20] = "You lose :(";
+        write(sd, msg, strlen(msg) * sizeof(char));
       } else if (winner < 0) {
         char msg[20] = "It's a tie!";
         write(sd, msg, strlen(msg) * sizeof(char));
       } else {
-        char msg[20] = "You lose :(";
+        char msg[20] = "You win!";
         write(sd, msg, strlen(msg) * sizeof(char));
       }
     }
