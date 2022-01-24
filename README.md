@@ -10,7 +10,7 @@ One user is going to run the server and wait for the other user to join. Once th
 ## Known Issues
 - The result (You win/lose/tie) is printed with extra characters for some reason
 - Words that use letters that aren't part of the originally generated set are still given points
-- * `main` branch does not work - please use `working` branch
+- *****`main` branch does not work - please use `working` branch*****
 
 ## Instructions
 1. Run `make`
