@@ -9,7 +9,6 @@ One user is going to run the server and wait for the other user to join. Once th
 
 ## Known Issues
 - The result (You win/lose/tie) is printed with extra characters for some reason
-- Words that use letters that aren't part of the originally generated set are still given points
 - *****`main` branch does not work - please use `working` branch*****
 
 ## Instructions
@@ -17,7 +16,8 @@ One user is going to run the server and wait for the other user to join. Once th
 2. Run `./server`
 3. The game won't start until two players join, so run `./player` in two different terminals
 4. Input words that use the randomly generated letters (each letter can only be used once)
-5. When the game is finished, run `make clean` to delete the word history files so you can run a new game
+5. When the timer ends, the game will be quit. If `fgets` is still running (i.e., you still see the `Input: ` line in the player program), press the enter key and the game will be finished
+6. When the game is finished, run `make clean` to delete the word history files so you can run a new game
 
 ## Technical Design:  
 - Files: Checking the word list, saving high scores
