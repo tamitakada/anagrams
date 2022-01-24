@@ -31,13 +31,11 @@ char * generate_characters() {
     	if (j != r) {
     		vowels_left[j] = vowels[j];
     	}
-    	vowels_used[0] = vowels[j];
     }
     
     //adding the second vowel; not that practical but only 2 vowels anyways
     r = rand() % 4;
     chars[i] = vowels_left[r];
-    vowels_used[1] = vowels_left[r];
   }
   
   //adding the consonants 
