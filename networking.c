@@ -2,6 +2,14 @@
 #include "word_handling.h"
 #include <signal.h>
 
+#ifdef __linux__
+	char ding[] = "cat sounds/ding.mp3 > /dev/dsp";
+#endif
+
+#ifdef __APPLE__
+	char ding[] = "afplay sounds/ding.mp3";
+#endif
+
 struct player_data {
   int server_pid;
   int server_socket;
@@ -31,7 +39,7 @@ void server_end_game(int sig) {
     char * p0_highscore_filename;
     int p0_highscore;
     p0_highscore_filename = "p0_highscore_filename";
-   	int fd = open("p0_highscore_filename", O_CREAT | O_WRONLY, 0644);
+   	fd = open("p0_highscore_filename", O_CREAT | O_WRONLY, 0644);
    	read(fd, &p0_highscore, sizeof(int));
    	
    	if (p0_highscore < score_0) {
@@ -49,7 +57,7 @@ void server_end_game(int sig) {
     char * p1_highscore_filename;
     int p1_highscore;
     p1_highscore_filename = "p1_highscore_filename";
-   	int fd = open("p1_highscore_filename", O_CREAT | O_WRONLY, 0644);
+   	fd = open("p1_highscore_filename", O_CREAT | O_WRONLY, 0644);
    	read(fd, &p1_highscore, sizeof(int));
    	
    	if (p1_highscore < score_0) {
@@ -138,6 +146,7 @@ void processing(int player_number, char * chars) {
         b = read(sd, word, sizeof(word));
         word[b] = 0;
         printf("Received word: %s\n", word);
+        system(ding);
         
         int wd_pts;
         if (already_used(filename, word)) wd_pts = 0;
@@ -159,6 +168,7 @@ void processing(int player_number, char * chars) {
           fd = open(filename, O_WRONLY | O_APPEND, 0644);
           write(fd, word, (b + 1) * sizeof(char));
           close(fd);
+          system(ding);
         }
         
         write(sd, &wd_pts, sizeof(int));
