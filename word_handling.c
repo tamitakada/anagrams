@@ -49,7 +49,7 @@ char * generate_characters() {
   for (i = 2; i < 6; i++) {
   	char r = rand() % 26 + 97;
   	
-  	//checking duplicates and vowels; if true, regenerate 
+  	//checking duplicates, vowels, and consonants; if true, regenerate 
     while (is_duplicate(chars, r) || is_duplicate(vowels, r) || is_duplicate(bad_consonants, r)) {
     	r = rand() % 26 + 97;
     }  
