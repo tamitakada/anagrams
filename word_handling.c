@@ -1,13 +1,5 @@
 #include "networking.h"
 
-int is_duplicate(char * arr, char c) {
-  while (*arr) {
-    if (*arr == c) return 1;
-    arr++;
-  }
-  return 0;
-}
-
 char * generate_characters() {
   char * chars = malloc(sizeof(char) * 7);
   chars[6] = '\0';
@@ -43,6 +35,15 @@ char * generate_characters() {
     chars[i] = vowels_left[r];
     vowels_used[1] = vowels_left[r];
   }
+  
+  //checking duplication
+  int is_duplicate(char * arr, char c) {
+  while (*arr) {
+    if (*arr == c) return 1;
+    arr++;
+  }
+  return 0;
+}
   
   //adding the consonants 
   char bad_consonants[5] = {'z', 'x', 'j', 'q'};
