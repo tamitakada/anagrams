@@ -30,7 +30,7 @@ void server_end_game(int sig) {
     //high score
     char * p0_highscore_filename;
     int p0_highscore;
-    highscore_0 = "p0_highscore_filename";
+    p0_highscore_filename = "p0_highscore_filename";
    	int fd = open("p0_highscore_filename", O_RDONLY, 0644);
    	read(fd, &p0_highscore, sizeof(int));
    	
@@ -48,7 +48,7 @@ void server_end_game(int sig) {
     //high score
     char * p1_highscore_filename;
     int p1_highscore;
-    highscore_0 = "p1_highscore_filename";
+    p1_highscore_filename = "p1_highscore_filename";
    	int fd = open("p1_highscore_filename", O_RDONLY, 0644);
    	read(fd, &p1_highscore, sizeof(int));
    	
