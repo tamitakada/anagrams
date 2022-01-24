@@ -90,12 +90,13 @@ int get_word_points(char * word) {
   //   printf("Word already used!\n");
   //   return 0;
   // }
-
   int fd = open("words.txt", O_RDONLY, 0644);
+  FILE * fp = fopen("words.txt", "r");
 
-  char * w = NULL;
-  size_t len = 0;
-  while (getline(&w, &len, fd) != -1) {
+  char w[7];
+  while (fgets(w, sizeof(w), fp)) {
+    w[strcspn(w, "\n")] = 0;
+    printf("string: %s, %s\n", w, word);
     if (strcmp(w, word) == 0) {
       close(fd);
       double len = (double) strlen(w) - 1.0;

@@ -140,7 +140,7 @@ void processing(int player_number, char * chars) {
 
     write(sd, chars, sizeof(chars));
 
-    char word[7];
+    char word[7]; // THIS NEEDS TO BE MALLOCED
     int b;
     while (1) {
         b = read(sd, word, sizeof(word));
@@ -148,6 +148,7 @@ void processing(int player_number, char * chars) {
         printf("Received word: %s\n", word);
         
         int wd_pts = get_word_points(word);
+        printf("%d points\n", wd_pts);
 
         fd = open(score_filename, O_RDWR, 0644);
         int current_pts;
@@ -160,7 +161,6 @@ void processing(int player_number, char * chars) {
 
         players[player_number].score += wd_pts;
 
-        printf("%d points", wd_pts);
         if (wd_pts) {
           word[b] = '\n';
           fd = open(filename, O_WRONLY | O_APPEND, 0644);
