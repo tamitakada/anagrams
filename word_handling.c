@@ -13,12 +13,12 @@ char * generate_characters() {
   chars[6] = '\0';
 
 	int i;
+  char vowels[5] = {'a', 'e', 'i', 'o', 'u'};
 	
 	//to generate the first 2 vowels without duplicating 
 	for (i = 0; i < 2; i++) {
 	
 		//adding the first vowel
-		char vowels[5] = {'a', 'e', 'i', 'o', 'u'};
     int r = rand() % 5;
     chars[i] = vowels[r];
     
@@ -45,11 +45,12 @@ char * generate_characters() {
   }
   
   //adding the consonants 
+  char bad_consonants[5] = {'z', 'x', 'j', 'q'};
   for (i = 2; i < 6; i++) {
   	char r = rand() % 26 + 97;
   	
   	//checking duplicates and vowels; if true, regenerate 
-    while (is_duplicate(chars, r) || r == 'a' || r == 'e' || r == 'i' || r == 'o' || r == 'u') {
+    while (is_duplicate(chars, r) || is_duplicate(vowels, r) || is_duplicate(bad_consonants, r)) {
     	r = rand() % 26 + 97;
     }  
     
