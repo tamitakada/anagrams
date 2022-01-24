@@ -19,8 +19,8 @@ void server_end_game(int sig) {
   } else if (sig == SIGTERM) {
     int winner = 1;
 
-    int score_0 = score_handling("score_0.data", "p0_highscore");
-    int score_1 = score_handling("score_1.data", "p1_highscore");
+    int score_0 = score_handling("score_0.data");
+    int score_1 = score_handling("score_1.data");
 
     if (score_0 > score_1) winner = 0;
     else if (score_0 == score_1) winner = -1;
