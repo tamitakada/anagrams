@@ -5,14 +5,12 @@
 struct player_data {
   int server_pid;
   int server_socket;
-  int score;
 };
 
 // Global vars
 struct player_data players[2];
 
-// Signal handlers
-
+// Signal handler
 void server_end_game(int sig) {
   if (sig == SIGALRM) {
     int i;
@@ -125,8 +123,6 @@ void processing(int player_number, char * chars) {
         write(fd, &new_pts, sizeof(int));
         close(fd);
 
-        players[player_number].score += wd_pts;
-
         if (wd_pts) {
           word[b] = '\n';
           fd = open(filename, O_WRONLY | O_APPEND, 0644);
@@ -169,7 +165,6 @@ void handle_client(int sd) {
 
         struct player_data player;
         player.server_socket = client_socket;
-        player.score = 0;
         players[number_clients] = player;
         
         printf("Player #%d joined!\n", number_clients);
