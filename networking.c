@@ -83,6 +83,86 @@ void server_end_game(int sig) {
   }
 }
 
+void server_end_game(int sig) {
+  if (sig == SIGALRM) {
+    int i;
+    for (i = 0; i < 2; i++) kill(players[i].server_pid, SIGTERM);
+    exit(0);
+  } else if (sig == SIGTERM) {
+    int winner = 1;
+
+		//opening and getting score for player_0
+    int score_0;
+    int fd = open("score_0.data", O_RDONLY, 0644);
+    read(fd, &score_0, sizeof(int));
+    close(fd);
+    
+    //high score
+    char * p0_highscore_filename;
+    int p0_highscore;
+    p0_highscore_filename = "p0_highscore_filename";
+   	int fd = open("p0_highscore_filename", O_CREAT | O_WRONLY, 0644);
+   	read(fd, &p0_highscore, sizeof(int));
+   	
+   	if (p0_highscore < score_0) {
+   		write(fd, &score_0, sizeof(int));
+   	}
+    close(fd);
+    
+
+    int score_1;
+    fd = open("score_1.data", O_RDONLY, 0644);
+    read(fd, &score_1, sizeof(int));
+    close(fd);
+    
+    //high score
+    char * p1_highscore_filename;
+    int p1_highscore;
+    p1_highscore_filename = "p1_highscore_filename";
+   	int fd = open("p1_highscore_filename", O_CREAT | O_WRONLY, 0644);
+   	read(fd, &p1_highscore, sizeof(int));
+   	
+   	if (p1_highscore < score_0) {
+   		write(fd, &score_1, sizeof(int));
+   	}
+    close(fd);
+    
+
+    if (score_0 > score_1) winner = 0;
+    else if (score_0 == score_1) winner = -1;
+
+    int i;
+    for (i = 0; i < 2; i++) {
+      int num = -1;
+      write(players[i].server_socket, &num, sizeof(int));
+
+      int sd = players[i].server_socket;
+      if (winner == i) {
+        char msg[20] = "You win!";
+        write(sd, "You win!", strlen(msg) * sizeof(char));
+      } else if (winner < 0) {
+        char msg[20] = "It's a tie!";
+        write(sd, msg, strlen(msg) * sizeof(char));
+      } else {
+        char msg[20] = "You lose :(";
+        write(sd, msg, strlen(msg) * sizeof(char));
+      }
+    }
+
+    exit(0);
+  }
+}
+
+void server_quit_game(int sig) {
+  if (sig == SIGALRM) {
+    int i;
+    for (i = 0; i < 2; i++) kill(players[i].server_pid, SIGTERM);
+    exit(0);
+  } else if (sig == SIGTERM) {
+    exit(0);
+  }
+}
+
 int server_setup() {
 	struct addrinfo * hints, * results;
 	hints = calloc(1, sizeof(struct addrinfo));
