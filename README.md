@@ -24,7 +24,7 @@ One user is going to run the server and wait for the other user to join. Once th
 - Signals: Quitting the game/error handling
   - Use `kill` and `sighandler` to handle different signals
 - Timer (Timer library or forking parent and child process & wait(1))
-- Sound effects (SDL/SDL_mixer library)
+- Sound effects
 - UI: Modifying prints to make the game look nice
 
 ## Timeline:
