@@ -83,16 +83,6 @@ void server_end_game(int sig) {
   }
 }
 
-void server_quit_game(int sig) {
-  if (sig == SIGALRM) {
-    int i;
-    for (i = 0; i < 2; i++) kill(players[i].server_pid, SIGTERM);
-    exit(0);
-  } else if (sig == SIGTERM) {
-    exit(0);
-  }
-}
-
 int server_setup() {
 	struct addrinfo * hints, * results;
 	hints = calloc(1, sizeof(struct addrinfo));
