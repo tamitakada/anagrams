@@ -1,6 +1,6 @@
 #include "networking.h"
 #include "word_handling.h"
-#include <signal.h>
+#include "game.h"
 
 struct player_data {
   int server_pid;
@@ -19,15 +19,8 @@ void server_end_game(int sig) {
   } else if (sig == SIGTERM) {
     int winner = 1;
 
-    int score_0;
-    int fd = open("score_0.data", O_RDONLY, 0644);
-    read(fd, &score_0, sizeof(int));
-    close(fd);
-
-    int score_1;
-    fd = open("score_1.data", O_RDONLY, 0644);
-    read(fd, &score_1, sizeof(int));
-    close(fd);
+    int score_0 = score_handling("score_0.data", "p0_highscore");
+    int score_1 = score_handling("score_1.data", "p1_highscore");
 
     if (score_0 > score_1) winner = 0;
     else if (score_0 == score_1) winner = -1;
@@ -80,124 +73,104 @@ int server_setup() {
     char * chars - The set characters that can be used in the game
 */
 void processing(int player_number, char * chars) {
-    int sd = players[player_number].server_socket;
+  int sd = players[player_number].server_socket;
 
-    // Word history file
-    char * filename;
-    char * score_filename;
-    if (player_number) {
-      filename = "player_1.txt";
-      score_filename = "score_0.data";
-    } else {
-      filename = "player_0.txt";
-      score_filename = "score_1.data";
-    }
+  // Word history file
+  char * filename;
+  char * score_filename;
+  if (player_number) {
+    filename = "player_1.txt";
+    score_filename = "score_0.data";
+  } else {
+    filename = "player_0.txt";
+    score_filename = "score_1.data";
+  }
 
-    int fd = open(filename, O_CREAT, 0644);
-    close(fd);
+  int fd = open(filename, O_CREAT, 0644);
+  close(fd);
 
-    fd = open(score_filename, O_CREAT | O_WRONLY, 0644);
-    int def = 0;
-    write(fd, &def, sizeof(int));
-    close(fd);
+  fd = open(score_filename, O_CREAT | O_WRONLY, 0644);
+  int def = 0;
+  write(fd, &def, sizeof(int));
+  close(fd);
 
-    write(sd, chars, sizeof(chars));
+  write(sd, chars, sizeof(chars));
 
-    char word[7];
-    int b;
-    while (1) {
-        b = read(sd, word, sizeof(word));
-        word[b] = 0;
-        printf("Received word: %s\n", word);
-        
-        int wd_pts;
-        if (already_used(filename, word) || !is_in_char_set(word, chars)) wd_pts = 0;
-        else wd_pts = get_word_points(word);
-
-        fd = open(score_filename, O_RDWR, 0644);
-        int current_pts;
-        read(fd, &current_pts, sizeof(int));
-
-        lseek(fd, 0, SEEK_SET);
-        int new_pts = current_pts + wd_pts;
-        write(fd, &new_pts, sizeof(int));
-        close(fd);
-
-        if (wd_pts) {
-          word[b] = '\n';
-          fd = open(filename, O_WRONLY | O_APPEND, 0644);
-          write(fd, word, (b + 1) * sizeof(char));
-          close(fd);
-        }
-        
-        write(sd, &wd_pts, sizeof(int));
-    }
-}
-
-void client_processing(int sd) {
-  char letters[7];
-  int n = read(sd, letters, sizeof(letters));
-  if (n) printf("Letters: %s\n", letters);
-
+  char word[7];
+  int b;
   while (1) {
-    char * word = get_input();
-    write(sd, word, strlen(word) * sizeof(char));
+    b = read(sd, word, sizeof(word));
+    word[b] = 0;
+    printf("Received word: %s\n", word);
+    
     int wd_pts;
-    int b = read(sd, &wd_pts, sizeof(int));
-    while (b < sizeof(int)) {
-      lseek(sd, -(b), SEEK_CUR);
-      b = read(sd, &wd_pts, sizeof(int));
-    }
+    if (already_used(filename, word) || !is_in_char_set(word, chars)) wd_pts = 0;
+    else wd_pts = get_word_points(word);
 
-    if (wd_pts < 0) break;
-    else printf("+%d points\n\n", wd_pts);
+    fd = open(score_filename, O_RDWR, 0644);
+    int current_pts;
+    read(fd, &current_pts, sizeof(int));
+
+    lseek(fd, 0, SEEK_SET);
+    int new_pts = current_pts + wd_pts;
+    write(fd, &new_pts, sizeof(int));
+    close(fd);
+
+    if (wd_pts) {
+      word[b] = '\n';
+      fd = open(filename, O_WRONLY | O_APPEND, 0644);
+      write(fd, word, (b + 1) * sizeof(char));
+      close(fd);
+    }
+    
+    write(sd, &wd_pts, sizeof(int));
   }
 }
 
 void handle_client(int sd) {
-    int number_clients = 0;
-    while (number_clients < 2) {
-        int client_socket;
-        socklen_t sock_size;
-        struct sockaddr_storage client_address;
-        sock_size = sizeof(client_address);
-        client_socket = accept(sd,(struct sockaddr *)&client_address, &sock_size);
+  int number_clients = 0;
+  while (number_clients < 2) {
+    int client_socket;
+    socklen_t sock_size;
+    struct sockaddr_storage client_address;
+    sock_size = sizeof(client_address);
+    client_socket = accept(sd,(struct sockaddr *)&client_address, &sock_size);
 
-        struct player_data player;
-        player.server_socket = client_socket;
-        players[number_clients] = player;
-        
-        printf("Player #%d joined!\n", number_clients);
-        number_clients++;
-    }
+    struct player_data player;
+    player.server_socket = client_socket;
+    players[number_clients] = player;
     
-    char * chars = generate_characters();
+    printf("Player #%d joined!\n", number_clients);
+    number_clients++;
+  }
+  
+  char * chars = generate_characters();
 
-    signal(SIGALRM, server_end_game);
+  signal(SIGALRM, server_end_game);
 
-    int pid_player_0 = fork();
-    if (pid_player_0 > 0) {
-      players[0].server_pid = pid_player_0;
+  int pid_player_0 = fork();
+  if (pid_player_0 > 0) {
+    players[0].server_pid = pid_player_0;
 
-      int pid_player_1 = fork();
-      if (pid_player_1 > 0) {
-        players[1].server_pid = pid_player_1;
-        alarm(20);
-        wait(NULL);
-      } else {
-        printf("Forked player #1!\n");
-        // Set sig handler for forked server
-        signal(SIGTERM, server_end_game);
-
-        processing(1, chars);
-      }
+    int pid_player_1 = fork();
+    if (pid_player_1 > 0) {
+      players[1].server_pid = pid_player_1;
+      alarm(20);
+      wait(NULL);
     } else {
-      printf("Forked player #0!\n");
+      printf("Forked player #1!\n");
       // Set sig handler for forked server
       signal(SIGTERM, server_end_game);
 
-      processing(0, chars);
+      processing(1, chars);
     }
+  } else {
+    printf("Forked player #0!\n");
+    // Set sig handler for forked server
+    signal(SIGTERM, server_end_game);
+
+    processing(0, chars);
+  }
 }
 
 void server_connect(int sd) {
@@ -207,19 +180,19 @@ void server_connect(int sd) {
 }
 
 int client_connect() {
-    struct addrinfo * hints, * results;
-    hints = calloc(1,sizeof(struct addrinfo));
-    hints->ai_family = AF_INET;
-    hints->ai_socktype = SOCK_STREAM;
-    getaddrinfo("127.0.0.1", "9846", hints, &results);
+  struct addrinfo * hints, * results;
+  hints = calloc(1,sizeof(struct addrinfo));
+  hints->ai_family = AF_INET;
+  hints->ai_socktype = SOCK_STREAM;
+  getaddrinfo("127.0.0.1", "9846", hints, &results);
 
-    int sd = socket(results->ai_family, results->ai_socktype, results->ai_protocol);
+  int sd = socket(results->ai_family, results->ai_socktype, results->ai_protocol);
 
-    connect(sd, results->ai_addr, results->ai_addrlen);
-    printf("Connected to server!\n");
+  connect(sd, results->ai_addr, results->ai_addrlen);
+  printf("Connected to server!\n");
 
-    free(hints);
-    freeaddrinfo(results);
+  free(hints);
+  freeaddrinfo(results);
 
-    return sd;
-  }
+  return sd;
+}
