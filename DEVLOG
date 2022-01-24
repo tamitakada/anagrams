@@ -1,0 +1,10 @@
+- Jan 18: Amy setup the word list and sorted through it to only include words valid for our game
+- Jan 18: Tami began work on the websocket portion and forking 
+- Jan 19: Amy & Tami worked on initial character generation, creating functions to check for duplicate letters, and allocating memory for char lists
+- Jan 20: Tami added input functions to read words from the users
+- Jan 23: Amy & Viana improved the letter generation system
+- Jan 23: Viana worked on signals and signal handling
+- Jan 23: Viana added high score management
+- Jan 23: Tami added a timer and signal to end game
+- Jan 23: Amy added sounds 
+- Jan 24: Amy & Tami fixed letter generation
