@@ -1,4 +1,5 @@
 #include "networking.h"
+#include "game.h"
 
 int main() {
   int sd = client_connect();
@@ -11,5 +12,7 @@ int main() {
     printf("%c", current);
   }
   
-  printf("\n");
+  printf("\n\n");
+
+  show_high_scores();
 }
