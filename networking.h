@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <math.h>
 
 #ifndef NETWORKING_H
 #define NETWORKING_H

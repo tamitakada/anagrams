@@ -87,7 +87,8 @@ int get_word_points(char * word) {
       w[i] = '\0';
       if (strcmp(w, word) == 0) {
           close(fd);
-          return ((int) strlen(w)) * 100;
+          double len = (double) strlen(w) - 1.0;
+          return (int) pow(2.0, len) * 100;
       }
       i = 0;
     } else {

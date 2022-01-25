@@ -2,10 +2,10 @@ all: player server
 
 
 player: player.o networking.o word_handling.o game.o
-	gcc -o player player.o networking.o word_handling.o game.o
+	gcc -o player player.o networking.o word_handling.o game.o -lm
 
 server: server.o networking.o word_handling.o game.o
-	gcc -o server server.o networking.o word_handling.o game.o
+	gcc -o server server.o networking.o word_handling.o game.o -lm
 
 player.o: player.c networking.h word_handling.h game.h
 	gcc -c player.c

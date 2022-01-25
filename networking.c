@@ -2,6 +2,14 @@
 #include "word_handling.h"
 #include "game.h"
 
+#ifdef __linux__
+	char ding[] = "cat sounds/ding.mp3 > /dev/dsp";
+#endif
+
+#ifdef __APPLE__
+	char ding[] = "afplay sounds/ding.mp3";
+#endif
+
 struct player_data {
   int server_pid;
   int server_socket;
@@ -121,6 +129,7 @@ void processing(int player_number, char * chars) {
       fd = open(filename, O_WRONLY | O_APPEND, 0644);
       write(fd, word, (b + 1) * sizeof(char));
       close(fd);
+      system(ding);
     }
     
     write(sd, &wd_pts, sizeof(int));
