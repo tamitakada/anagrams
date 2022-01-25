@@ -47,7 +47,6 @@ char * generate_characters() {
 
 char * get_input() {
   char word[100];
-  printf("Input: ");
   fgets(word, sizeof(word), stdin);
 
   int i = strcspn(word, "\n");

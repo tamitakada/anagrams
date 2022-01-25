@@ -16,12 +16,12 @@ int score_handling(char * game_score_file) {
 void client_processing(int sd) {
   char letters[7];
   int n = read(sd, letters, sizeof(letters));
-  if (n) printf("Letters: %s\n", letters);
-
+  int wd_pts = 0;
   while (1) {
+    printf("Letters: %s\n", letters);
+    printf("Points: %d\nInput: ", wd_pts);
     char * word = get_input();
     write(sd, word, strlen(word) * sizeof(char));
-    int wd_pts;
     int b = read(sd, &wd_pts, sizeof(int));
     while (b < sizeof(int)) {
       lseek(sd, -(b), SEEK_CUR);
