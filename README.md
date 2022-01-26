@@ -9,6 +9,7 @@ One user is going to run the server and wait for the other user to join. Once th
 
 ## Known Issues
 - The result (You win/lose/tie) is printed with extra characters for some reason
+- Points system may not work properly due to a strange issue with `strcmp` failing
 
 ## Instructions
 1. Run `make`
