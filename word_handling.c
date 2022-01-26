@@ -1,5 +1,4 @@
 #include "networking.h"
-#include <math.h>
 
 int is_duplicate(char * arr, char c) {
   while (*arr) {
@@ -17,38 +16,37 @@ char * generate_characters() {
   char vowels[5] = {'a', 'e', 'i', 'o', 'u'};
 	
 	//to generate the first 2 vowels without duplicating 
-	for (i = 0; i < 2; i++) {
-    int r = rand() % 5;
-    char v = vowels[r];
-
-    //reroll if duplicate
-    while (is_duplicate(chars, v)) {
+  for (i = 0; i < 6; i++) {
+    if (i < 2) {
       int r = rand() % 5;
-      char v = vowels[r];
+      chars[i] = vowels[r];
+
+      int j; int index = 0;
+      for (j = 0; j < 4; j++) {
+        if (vowels[j] != chars[i]) {
+          vowels[index] = vowels[j];
+          index++;
+        }
+      }
+    } else {
+      char bad_consonants[5] = {'z', 'x', 'j', 'q'};
+      char r = rand() % 26 + 97;
+      
+      //checking duplicates and vowels; if true, regenerate 
+      while (is_duplicate(chars, r) || is_duplicate(vowels, r) || is_duplicate(bad_consonants, r)) {
+        r = rand() % 26 + 97;
+      }
+      
+      //adding it to array
+      chars[i] = r;
     }
-    chars[i] = v;
   }
-  
-  //adding the consonants 
-  char bad_consonants[5] = {'z', 'x', 'j', 'q'};
-  for (i = 2; i < 6; i++) {
-  	char r = rand() % 26 + 97;
-  	
-  	//checking duplicates, vowels, and consonants; if true, regenerate 
-    while (is_duplicate(chars, r) || is_duplicate(vowels, r) || is_duplicate(bad_consonants, r)) {
-    	r = rand() % 26 + 97;
-    }  
-    
-    //adding it to array
-    chars[i] = r;
-  }
-  
+
   return chars;
 }
 
 char * get_input() {
   char word[100];
-  printf("Input: ");
   fgets(word, sizeof(word), stdin);
 
   int i = strcspn(word, "\n");
@@ -59,6 +57,47 @@ char * get_input() {
   strcpy(to_return, word);
 
   return to_return;
+}
+
+int is_in_char_set(char * word, char * chars) {
+  char used_up[10];
+  used_up[0] = 0;
+  int i = 0;
+  while (*word) {
+    if (!is_duplicate(chars, *word) || is_duplicate(used_up, *word)) return 0;
+    else {
+      used_up[i] = *word;
+      i++;
+      used_up[i] = 0;
+    }
+    word++;
+  }
+  return 1;
+}
+
+int get_word_points(char * word) {
+  int fd = open("words.txt", O_RDONLY, 0644);
+
+  char c;
+  char w[7];
+  int i = 0;
+  while (read(fd, &c, sizeof(c))) {
+    if (c == '\n') {
+      w[i] = '\0';
+      if (strcmp(w, word) == 0) {
+          close(fd);
+          double len = (double) strlen(w) - 1.0;
+          return (int) pow(2.0, len) * 100;
+      }
+      i = 0;
+    } else {
+      w[i] = c;
+      i++;
+    }
+  }
+
+  close(fd);
+  return 0;
 }
 
 int already_used(char * filename, char * word) {
@@ -78,29 +117,6 @@ int already_used(char * filename, char * word) {
     } else {
       past_word[i] = current;
       i++;
-    }
-  }
-
-  close(fd);
-  return 0;
-}
-
-int get_word_points(char * word) {
-  // if already_used(filename, word) {
-  //   printf("Word already used!\n");
-  //   return 0;
-  // }
-  int fd = open("words.txt", O_RDONLY, 0644);
-  FILE * fp = fopen("words.txt", "r");
-
-  char w[7];
-  while (fgets(w, sizeof(w), fp)) {
-    w[strcspn(w, "\n")] = 0;
-    printf("string: %s, %s\n", w, word);
-    if (strcmp(w, word) == 0) {
-      close(fd);
-      double len = (double) strlen(w) - 1.0;
-      return (int) pow(2.0, len) * 100;
     }
   }
 
