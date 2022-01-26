@@ -9,7 +9,6 @@ One user is going to run the server and wait for the other user to join. Once th
 
 ## Known Issues
 - The result (You win/lose/tie) is printed with extra characters for some reason
-- *****`main` branch does not work - please use `working` branch*****
 
 ## Instructions
 1. Run `make`
